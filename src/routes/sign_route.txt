@@ -28,37 +28,3 @@ UPDATE:
 4--update data
 5--if confirm pass >>>compare (pass and confirm_pass)
 6--save 
-
-
->>>>>>>>>>>>>first name:
-VALIDATIONS:::::::
-	string
-	required
-	alpha
-
->>>>>>>>>>>>lastname:
-VALIDATIONS:::::::
-	string
-	required
-	alpha
-
->>>>>>>>>>>>email:
-VALIDATIONS:::::::
-	String
-	required
-	isEmail
-	unique: (if id is modified)
-
->>>>>>>>>>>>password:
-VALIDATIONS::::::
-	string
-	required
-	length(>=10)
-	condition:(alphabet,number,special char)
-
->>>>>>>>>>Token[]:
-VALIDATIONS:::::::
-	string
-	required
-      
-
