@@ -32,7 +32,6 @@ const sign_skima = new mongoose.Schema({
     email:{
         type: String,
         required:[true,'email is required'],
-        // unique:[true,'email is registered'],
         validate:[
             {
                 validator(value){
@@ -40,14 +39,15 @@ const sign_skima = new mongoose.Schema({
                 },
                 message: `email is not valid `
             },
-            //Mongoose unique validation error type
-            //https://stackoverflow.com/questions/13580589/mongoose-unique-validation-error-type
+            // //Mongoose unique validation error type
+            // //https://stackoverflow.com/questions/13580589/mongoose-unique-validation-error-type
             {
                 async validator(value){
                     //for sign-up id will be modified but for sign-in or update there is no need to check unique validation
-                    if(this.isModified('_id')){
-                    const count = await mongoose.model('sign').count({email:value})
-                    return(!count)
+                    // https://mongoosejs.com/docs/api/document.html
+                    if(this.isNew){
+                        const count = await mongoose.model('sign').count({email:value})
+                        return(!count)
                     }
                 },
                 message: `email is already taken`
@@ -96,9 +96,10 @@ sign_skima.statics.check_user = async (email,password)=>{
 
 sign_skima.methods.JWT_token = async function(){
     const user = this
-    const gen_token = jsonwebtoken.sign({_id:user._id.toString()},'gamedistros',{expiresIn:'48h'})
-    user.Tokens = user.Tokens.concat({token:gen_token})
-    return gen_token
+    const token = await jsonwebtoken.sign({_id:user._id.toString()},'gamedistros',{expiresIn:'48h'})
+    user.Tokens = user.Tokens.concat({token})
+    await user.save()
+    return token
 }
 
 
@@ -123,6 +124,15 @@ sign_skima.pre('save',async function(next){
     next()
 })
 
+// ----when we pass an object to res.send, its calling JSON.stringify behind the scenes which call ToJSON
+sign_skima.methods.toJSON = function(){
+    const user = this
+    const userobj = user.toObject()
+    delete userobj.password
+    delete userobj.Tokens
+    delete userobj.__v
+    return userobj
+}
 const sign = mongoose.model('sign',sign_skima)
 module.exports = sign
 

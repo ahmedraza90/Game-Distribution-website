@@ -15,7 +15,7 @@ VALIDATIONS:::::::
 	String
 	required
 	isEmail
-	unique: (if id is modified)
+	unique: (if document is new)
 
 >>>>>>>>>>>>password:
 VALIDATIONS::::::

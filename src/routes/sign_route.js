@@ -41,12 +41,11 @@ router.post('/sign-up',async (req,res)=>{
 
 //sign-in end point
 router.post('/sign-in',async (req,res)=>{
+//check email or password is empty or not from front end
 try{
      const user  = await sign.check_user(req.body.email,req.body.password)
      const token = await user.JWT_token() 
-    //  const update = await sign.findOneAndUpdate({_id:user._id}, { Tokens: user.Tokens })
-     await user.save()
-     res.status(200).send(user)
+     res.status(200).send({user,token})
 }catch(e){
   res.status(400).send(e)
 }
