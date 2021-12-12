@@ -97,5 +97,13 @@ router.patch('/update',auth,async (req,res)=>{
 
 })
 
-
+//delete user
+router.delete('/delete',auth,async (req,res)=>{
+  try{
+    await req.token_user.remove()
+    res.send('success')
+  }catch(e){
+    res.status(400).send(e)
+  }
+})
 module.exports=router
