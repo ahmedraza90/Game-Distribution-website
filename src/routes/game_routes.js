@@ -22,7 +22,8 @@ route.get('/get-games-filter-public',async(req,res)=>{
         match.category = req.query.category
     }
         try{
-            const user = await game.find(match).limit(6).skip(parseInt(req.query.skip)).sort({no_of_purchased:-1})
+            const user = await game.find()
+            // const user = await game.find(match).limit(6).skip(parseInt(req.query.skip)).sort({no_of_purchased:-1})
             res.send(user)
         }catch(e){
             console.log(e)
