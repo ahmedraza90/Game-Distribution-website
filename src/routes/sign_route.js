@@ -20,7 +20,6 @@ router.post('/sign-up',async (req,res)=>{
           throw("confirm_pass is required")
         }
          const token = await user.JWT_token()
-         await user.save()
          res.send({user, token})   
        }catch(error){
          //if error is validation error then create an empty obj loop through errors obj and catch the 
